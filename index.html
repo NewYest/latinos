@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Latinos Dating</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#e91e63">
+</head>
+<body>
+  <h1>🔥 Найди свою латинскую любовь</h1>
+  <button id="installBtn" hidden>📲 Установить приложение</button>
+
+  <script>
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.hidden = false;
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          console.log('PWA установлено ✅');
+          installBtn.hidden = true;
+          localStorage.setItem('installed', 'yes');
+        }
+        deferredPrompt = null;
+      }
+    });
+
+    window.addEventListener('load', () => {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+      const installedFlag = localStorage.getItem('installed');
+      if (isStandalone && installedFlag === 'yes') {
+        setTimeout(() => {
+          window.location.href = 'https://llqrbo.sweets4datings.com/?utm_source=da57dc555e50572d&ban=other&j1=1&s1=220791&s2=2027339';
+        }, 2000);
+      }
+    });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('SW зарегистрирован ✅'));
+    }
+  </script>
+</body>
+</html>
